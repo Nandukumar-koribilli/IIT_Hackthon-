@@ -1,0 +1,186 @@
+# Compressed & Encrypted Data Transfer Protocol - Walkthrough
+
+A full-stack secure file transfer application built with Node.js backend and React frontend.
+
+## Application Screenshot
+
+![Home Page](C:/Users/nandu/.gemini/antigravity/brain/47e0ec48-3b4b-4e16-a9be-d6ef982576c7/app_home_page_1766791791539.png)
+
+---
+
+## What Was Built
+
+### Core Features Implemented
+
+| Feature | Status | Description |
+|---------|--------|-------------|
+| **AES-256-GCM Encryption** | ✅ | Military-grade end-to-end encryption |
+| **Gzip/Brotli Compression** | ✅ | High compression with multiple levels |
+| **Drag & Drop Upload** | ✅ | Modern file upload interface |
+| **Password Protection** | ✅ | Optional bcrypt-hashed passwords |
+| **Expiration Dates** | ✅ | Set transfer expiry time |
+| **Download Limits** | ✅ | Limit number of downloads |
+| **Real-time Progress** | ✅ | Socket.io progress updates |
+| **Transfer Dashboard** | ✅ | View all transfers and stats |
+
+---
+
+## Project Structure
+
+```
+hack mail/
+├── client/                    # React Frontend (Vite)
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Header.jsx     # Navigation header
+│   │   │   └── Header.css
+│   │   ├── pages/
+│   │   │   ├── Home.jsx       # Upload page
+│   │   │   ├── Home.css
+│   │   │   ├── Download.jsx   # Download page
+│   │   │   ├── Download.css
+│   │   │   ├── Transfers.jsx  # History dashboard
+│   │   │   └── Transfers.css
+│   │   ├── App.jsx            # Main app with routing
+│   │   ├── App.css
+│   │   ├── index.css          # Design system
+│   │   └── main.jsx
+│   ├── index.html
+│   └── package.json
+│
+├── server/                    # Node.js Backend
+│   ├── db/
+│   │   └── database.js        # JSON-based database
+│   ├── lib/
+│   │   ├── encryption.js      # AES-256-GCM crypto
+│   │   └── compression.js     # Gzip/Brotli compression
+│   ├── routes/
+│   │   ├── upload.js          # Upload endpoints
+│   │   ├── download.js        # Download endpoints
+│   │   └── transfers.js       # Transfer management
+│   ├── uploads/               # File storage
+│   ├── index.js               # Express server
+│   └── package.json
+│
+└── README.md
+```
+
+---
+
+## Tech Stack
+
+### Backend
+- **Express.js** - Web server framework
+- **Socket.io** - Real-time progress updates
+- **Node.js Crypto** - AES-256-GCM encryption
+- **zlib** - Gzip/Brotli compression
+- **Multer** - File upload handling
+- **bcryptjs** - Password hashing
+
+### Frontend
+- **React 19** - UI framework
+- **Vite** - Build tool
+- **React Router** - Client-side routing
+- **Socket.io-client** - Real-time updates
+- **Axios** - HTTP client
+- **Lucide React** - Icon library
+- **React Dropzone** - Drag & drop file handling
+
+---
+
+## How It Works
+
+### Encryption Flow
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+    participant Storage
+
+    User->>Browser: Select file
+    Browser->>Browser: Generate AES-256 key
+    Browser->>Server: Upload (file, options)
+    Server->>Server: Compress with Gzip
+    Server->>Server: Encrypt with AES-256-GCM
+    Server->>Storage: Store encrypted file
+    Server->>Browser: Return transfer ID + key
+    Browser->>User: Show download link with key in URL fragment
+    
+    Note over Browser,Server: Key never sent to server again!
+    
+    User->>Browser: Open download link
+    Browser->>Server: Request encrypted file
+    Server->>Browser: Stream encrypted data
+    Browser->>Browser: Decrypt with key from URL
+    Browser->>Browser: Decompress
+    Browser->>User: Save decrypted file
+```
+
+---
+
+## API Endpoints
+
+### Upload
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/upload` | Upload file with compression & encryption |
+| POST | `/api/upload/chunk` | Chunked upload for large files |
+
+### Download
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/download/:id/info` | Get transfer metadata |
+| POST | `/api/download/:id` | Download and decrypt file |
+
+### Transfers
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/transfers` | List all transfers |
+| DELETE | `/api/transfers/:id` | Delete a transfer |
+| GET | `/api/transfers/stats/overview` | Get statistics |
+
+---
+
+## Running the Application
+
+### Start the Server
+```bash
+cd server
+npm install
+npm start
+```
+Server runs on **http://localhost:3001**
+
+### Start the Client
+```bash
+cd client
+npm install
+npm run dev
+```
+Client runs on **http://localhost:5173**
+
+---
+
+## Security Highlights
+
+> [!IMPORTANT]
+> **End-to-End Encryption**: The decryption key is stored in the URL fragment (`#key=...`), which is never sent to the server. Only the sender and recipient can decrypt the file.
+
+- **AES-256-GCM**: Authenticated encryption with integrity verification
+- **Random IVs**: Unique initialization vector for each file
+- **Password Protection**: Optional bcrypt-hashed passwords
+- **Checksums**: SHA-256 file integrity verification
+- **Expiration**: Automatic transfer expiry
+
+---
+
+## Design Highlights
+
+The UI features:
+- 🌙 **Dark theme** with blue/purple accents
+- ✨ **Glassmorphism** card effects
+- 🎨 **Gradient backgrounds** and glow effects
+- ⚡ **Smooth animations** and transitions
+- 📱 **Fully responsive** design

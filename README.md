@@ -121,8 +121,4 @@ Files are compressed using Gzip (default) or Brotli (for text content) before en
 - **Password Protection**: Optional bcrypt-hashed password protection
 - **HTTPS Ready**: Deploy behind HTTPS for production
 
-## License
-
-MIT License - feel free to use this project for personal or commercial purposes.
-
 

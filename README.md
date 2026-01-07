@@ -43,7 +43,7 @@ A lightweight protocol to securely transfer large data files with high compressi
 
 ```bash
 git clone <repository-url>
-cd hack-mail
+cd AlgosQuest_TECOS
 ```
 
 2. Install server dependencies:
@@ -119,6 +119,7 @@ Files are compressed using Gzip (default) or Brotli (for text content) before en
 - **URL Fragment**: Decryption key stored in URL fragment (not sent to server)
 - **Password Protection**: Optional bcrypt-hashed password protection
 - **HTTPS Ready**: Deploy behind HTTPS for production
+
 
 
 
